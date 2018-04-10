@@ -16,54 +16,6 @@ namespace VSCodeDebug
 		private static bool trace_requests;
 		private static bool trace_responses;
 		static string LOG_FILE_PATH = null;
-
-		private static void Main(string[] argv)
-		{
-			int port = -1;
-
-			// parse command line arguments
-			foreach (var a in argv) {
-				switch (a) {
-				case "--trace":
-					trace_requests = true;
-					break;
-				case "--trace=response":
-					trace_requests = true;
-					trace_responses = true;
-					break;
-				case "--server":
-					port = DEFAULT_PORT;
-					break;
-				default:
-					if (a.StartsWith("--server=")) {
-						if (!int.TryParse(a.Substring("--server=".Length), out port)) {
-							port = DEFAULT_PORT;
-						}
-					}
-					else if( a.StartsWith("--log-file=")) {
-						LOG_FILE_PATH = a.Substring("--log-file=".Length);
-					}
-					break;
-				}
-			}
-
-			if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("mono_debug_logfile")) == false) {
-				LOG_FILE_PATH = Environment.GetEnvironmentVariable("mono_debug_logfile");
-				trace_requests = true;
-				trace_responses = true;
-			}
-
-			if (port > 0) {
-				// TCP/IP server
-				Program.Log("waiting for debug protocol on port " + port);
-				RunServer(port);
-			} else {
-				// stdin/stdout
-				Program.Log("waiting for debug protocol on stdin/stdout");
-				RunSession(Console.OpenStandardInput(), Console.OpenStandardOutput());
-			}
-		}
-
 		static TextWriter logFile;
 
 		public static void Log(bool predicate, string format, params object[] data)
