@@ -176,6 +176,9 @@ namespace VSCodeDebug
 		public bool supportsFunctionBreakpoints;
 		public bool supportsConditionalBreakpoints;
 		public bool supportsEvaluateForHovers;
+		public bool supportsSetVariable;
+		public bool supportsHitConditionalBreakpoints;
+		public bool supportsExceptionOptions;
 		public dynamic[] exceptionBreakpointFilters;
 	}
 
@@ -246,6 +249,20 @@ namespace VSCodeDebug
 				breakpoints = new Breakpoint[0];
 			else
 				breakpoints = bpts.ToArray<Breakpoint>();
+		}
+	}
+
+	public class SetVariablesResponseBody : ResponseBody
+	{
+		public string value { get; }
+		public string type { get; }
+		public int variablesReference { get; }
+
+		public SetVariablesResponseBody(string value, string type, int variablesReference)
+		{
+			this.value = value;
+			this.type = type;
+			this.variablesReference = variablesReference;
 		}
 	}
 
@@ -374,6 +391,10 @@ namespace VSCodeDebug
 				case "evaluate":
 					Evaluate(response, args);
 					break;
+				
+				case "setVariable":
+					SetVariable(response, args);
+					break;
 
 				default:
 					SendErrorResponse(response, 1014, "unrecognized request: {_request}", new { _request = command });
@@ -389,6 +410,8 @@ namespace VSCodeDebug
 			}
 		}
 
+		protected abstract void SetVariable(Response response, object args);
+
 		public abstract void Initialize(Response response, dynamic args);
 
 		public abstract void Launch(Response response, dynamic arguments);
@@ -401,9 +424,7 @@ namespace VSCodeDebug
 		{
 		}
 
-		public virtual void SetExceptionBreakpoints(Response response, dynamic arguments)
-		{
-		}
+		public abstract void SetExceptionBreakpoints(Response response, dynamic arguments);
 
 		public abstract void SetBreakpoints(Response response, dynamic arguments);
 

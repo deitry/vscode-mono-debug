@@ -59,48 +59,5 @@ namespace VSCodeDebug
 				throw;
 			}
 		}
-
-		private static void RunSession(Stream inputStream, Stream outputStream)
-		{
-			DebugSession debugSession = new MonoDebugSession();
-			debugSession.TRACE = trace_requests;
-			debugSession.TRACE_RESPONSE = trace_responses;
-			debugSession.Start(inputStream, outputStream).Wait();
-
-			if (logFile!=null)
-			{
-				logFile.Flush();
-				logFile.Close();
-				logFile = null;
-			}
-		}
-
-		private static void RunServer(int port)
-		{
-			TcpListener serverSocket = new TcpListener(IPAddress.Parse("127.0.0.1"), port);
-			serverSocket.Start();
-
-			new System.Threading.Thread(() => {
-				while (true) {
-					var clientSocket = serverSocket.AcceptSocket();
-					if (clientSocket != null) {
-						Program.Log(">> accepted connection from client");
-
-						new System.Threading.Thread(() => {
-							using (var networkStream = new NetworkStream(clientSocket)) {
-								try {
-									RunSession(networkStream, networkStream);
-								}
-								catch (Exception e) {
-									Console.Error.WriteLine("Exception: " + e);
-								}
-							}
-							clientSocket.Close();
-							Console.Error.WriteLine(">> client connection closed");
-						}).Start();
-					}
-				}
-			}).Start();
-		}
 	}
 }
