@@ -45,6 +45,16 @@ namespace VSCodeDebug
 		}
 	}
 
+	/** Properties of a breakpoint or logpoint passed to the setBreakpoints request. */
+	public class SourceBreakpoint
+	{
+		public int line;
+		public int column;
+		public string condition;
+		public string hitCondition;
+		public string logMessage;
+	}
+
 	/*
 	 * subclasses of ResponseBody are serialized as the body of a response.
 	 * Don't change their instance variables since that will break the debug protocol.
