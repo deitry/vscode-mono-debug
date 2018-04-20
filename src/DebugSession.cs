@@ -113,10 +113,14 @@ namespace VSCodeDebug
 	{
 		public bool verified { get; }
 		public int line { get; }
+		public int column { get; }
+		public string message { get; }
 
-		public Breakpoint(bool verified, int line) {
+		public Breakpoint(bool verified, int line, int column, string logMessage) {
 			this.verified = verified;
 			this.line = line;
+			this.column = column;
+			message = logMessage;
 		}
 	}
 
