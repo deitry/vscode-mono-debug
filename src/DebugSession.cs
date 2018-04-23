@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Pango;
 
 namespace VSCodeDebug
 {
@@ -183,7 +185,22 @@ namespace VSCodeDebug
 		public bool supportsSetVariable;
 		public bool supportsHitConditionalBreakpoints;
 		public bool supportsExceptionOptions;
-		public dynamic[] exceptionBreakpointFilters;
+		public ExceptionBreakpointsFilter[] exceptionBreakpointFilters;
+	}
+
+	public class ExceptionBreakpointsFilter
+	{
+		public string filter { get; }
+		public string label { get; }
+		[JsonProperty("default")]
+		public bool? defaultValue { get; }
+
+		public ExceptionBreakpointsFilter(string filter, string label, bool defaultValue = false)
+		{
+			this.filter = filter;
+			this.label = label;
+			this.defaultValue = defaultValue;
+		} 
 	}
 
 	public class ErrorResponseBody : ResponseBody {
