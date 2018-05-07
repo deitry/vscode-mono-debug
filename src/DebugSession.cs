@@ -5,10 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Pango;
 
 namespace VSCodeDebug
 {
@@ -287,6 +284,16 @@ namespace VSCodeDebug
 		}
 	}
 
+	public class SetFunctionBreakpointsBody : ResponseBody
+	{
+		public Breakpoint[] breakpoints { get; }
+
+		public SetFunctionBreakpointsBody(Breakpoint[] breakpoints)
+		{
+			this.breakpoints = breakpoints;
+		}
+	}
+
 	// ---- The Session --------------------------------------------------------
 
 	public abstract class DebugSession : ProtocolServer
@@ -441,9 +448,7 @@ namespace VSCodeDebug
 
 		public abstract void Disconnect(Response response, dynamic arguments);
 
-		public virtual void SetFunctionBreakpoints(Response response, dynamic arguments)
-		{
-		}
+		public abstract void SetFunctionBreakpoints(Response response, dynamic arguments);
 
 		public abstract void SetExceptionBreakpoints(Response response, dynamic arguments);
 
