@@ -222,7 +222,6 @@ namespace VSCodeDebug
 
 		private void Dispatch(string req)
 		{
-			SendMessage(new OutputEvent("stdout", req));
 			var message = JsonConvert.DeserializeObject<ProtocolMessage>(req);
 			if (message != null) {
 				switch (message.type) {
