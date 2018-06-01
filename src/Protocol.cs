@@ -113,9 +113,9 @@ namespace VSCodeDebug
 
 		protected const int BUFFER_SIZE = 4096;
 		protected const string TWO_CRLF = "\r\n\r\n";
-		protected static readonly Regex CONTENT_LENGTH_MATCHER = new Regex(@"Content-Length: (\d+)");
+		protected static Regex CONTENT_LENGTH_MATCHER;
 
-		protected static readonly Encoding Encoding = System.Text.Encoding.UTF8;
+		protected static Encoding Encoding = System.Text.Encoding.UTF8;
 
 		private int _sequenceNumber;
 		private Dictionary<int, TaskCompletionSource<Response>> _pendingRequests;
@@ -130,6 +130,8 @@ namespace VSCodeDebug
 
 		public ProtocolServer()
 		{
+			CONTENT_LENGTH_MATCHER = new Regex(@"Content-Length: (\d+)");
+			Encoding = Encoding.UTF8;
 			_sequenceNumber = 1;
 			_bodyLength = -1;
 			_rawData = new ByteBuffer();

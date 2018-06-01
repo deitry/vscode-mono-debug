@@ -137,7 +137,8 @@ namespace VSCodeDebug
 			: base("stopped", new {
 				threadId = tid,
 				reason = reasn,
-				text = txt
+				text = txt,
+				allThreadsStopped = true
 			}) { }
 	}
 
@@ -282,6 +283,11 @@ namespace VSCodeDebug
 			this.type = type;
 			this.variablesReference = variablesReference;
 		}
+	}
+
+	public class ContinueResponseBody : ResponseBody
+	{
+		public bool allThreadsContinued = true;
 	}
 
 	public class SetFunctionBreakpointsBody : ResponseBody
