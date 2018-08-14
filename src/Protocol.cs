@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using UnityDebug;
 
 namespace VSCodeDebug
 {
@@ -232,7 +233,7 @@ namespace VSCodeDebug
 					{
 						var request = JsonConvert.DeserializeObject<Request>(req);
 
-						Program.Log(TRACE, "C {0}: {1}", request.command, JsonConvert.SerializeObject(request.arguments, Formatting.Indented));
+						Log.Write($"Command: {request.command}: {JsonConvert.SerializeObject(request.arguments, Formatting.Indented)}");
 
 						var response = new Response(request);
 						DispatchRequest(request.command, request.arguments, response);
