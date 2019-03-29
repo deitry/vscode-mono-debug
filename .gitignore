@@ -10,6 +10,7 @@
 *.zip
 *.exe
 *.exe.mdb
+.vs
 mono-debug.userprefs
 npm-debug.log
 .vs/mono-debug/v15/.suo
