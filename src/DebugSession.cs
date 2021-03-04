@@ -202,6 +202,12 @@ namespace VSCodeDebug
         public bool supportsHitConditionalBreakpoints;
         public bool supportsExceptionOptions;
         public bool supportsLogPoints;
+
+        /// <summary>
+        /// The development tool uses it to terminate the debuggee gracefully,
+        /// i.e. it gives the debuggee a chance to cleanup everything before terminating
+        /// </summary>
+        public bool supportsTerminateRequest;
         public ExceptionBreakpointsFilter[] exceptionBreakpointFilters;
     }
 
@@ -399,6 +405,10 @@ namespace VSCodeDebug
                         Attach(response, args);
                         break;
 
+                    case "terminate":
+                        Disconnect(response, args);
+                        break;
+
                     case "disconnect":
                         Disconnect(response, args);
                         break;
@@ -475,7 +485,7 @@ namespace VSCodeDebug
                     new { _request = command, _exception = e.Message, _trace = e.StackTrace });
             }
 
-            if (command == "disconnect")
+            if (command == "disconnect" || command == "terminate")
             {
                 Stop();
             }
